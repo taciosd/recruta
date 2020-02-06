@@ -1,0 +1,9 @@
+{
+  "name": "recrutatec-server",
+  "version": "1.0.0",
+  "description": "Node server for candidates and curriculum management.",
+  "main": "index.js",
+  "repository": "https://github.com/taciosd/recrutatec.git",
+  "author": "Tácio S. Diogo",
+  "license": "MIT"
+}
