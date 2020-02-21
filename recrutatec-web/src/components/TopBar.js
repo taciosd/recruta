@@ -50,7 +50,7 @@ export default function TopBar(prop) {
 
     return (
         <>
-        <AppBar className={classes.root} position="static">
+        <AppBar className={classes.root} position="fixed">
             <IconButton
                     color="inherit"
                     aria-label="open drawer"

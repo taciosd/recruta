@@ -18,19 +18,36 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         marginTop: theme.spacing(4),
+        [theme.breakpoints.down('xs')]: {
+            marginBottom: theme.spacing(10),
+        },
+        [theme.breakpoints.up('sm')]: {
+            position: 'relative',
+        }
     },
-    grid: {
-        alignContent: 'stretch',
-    },
-    fabContainer: {
-        marginTop: theme.spacing(2),
-        display: 'flex',
-        justifyContent: 'flex-end'
+    fab: {
+        [theme.breakpoints.down('xs')]: {
+            position: 'fixed',
+            bottom: theme.spacing(2),
+            right: theme.spacing(1),
+        },
+        [theme.breakpoints.up('sm')]: {
+            position: 'absolute',
+            bottom: theme.spacing(2),
+            right: theme.spacing(4),
+        },
     },
     savingProgress: {
-        position: 'absolute',
-        marginTop: -6,
-        marginLeft: 6,
+        [theme.breakpoints.down('xs')]: {
+            position: 'fixed',
+            bottom: theme.spacing(1.2),
+            right: theme.spacing(0.3),
+        },
+        [theme.breakpoints.up('sm')]: {
+            position: 'absolute',
+            bottom: theme.spacing(1.2),
+            right: theme.spacing(3.2),
+        },
     }
 }));
 
@@ -87,15 +104,14 @@ export default function Curriculum(props) {
 
     async function saveCandidate() {
         setIsSaving(true);
+        await new Promise(r => setTimeout(r, 4000));
         await axios.post(`/candidates/${id}`, {
-            ...location.state.cand,
             name: name,
             email: email,
             cpf: cpf,
             linkedin_url: linkedinUrl,
             curriculum_content: curriculumContent,
         });
-        
         setIsSaving(false);
     }
 /*
@@ -124,7 +140,7 @@ export default function Curriculum(props) {
 */
     return (
         <Container maxWidth="lg" className={classes.root}>
-            <Grid container spacing={theme.spacing(0.25)} className={classes.grid}>
+            <Grid container spacing={theme.spacing(0.25)}>
                 <Grid item xs={12}>
                     <TextField 
                         variant="outlined" 
@@ -184,20 +200,18 @@ export default function Curriculum(props) {
                         />
                 </Grid>
             </Grid>
-            <div className={classes.fabContainer}>
-                <Fab
+            <Fab
                 className={classes.fab}
-                    aria-label="save"
-                    color="primary"
-                    disabled={isSaving}
-                    onClick={onEditonFabClicked}
-                >
-                    {isEditing ? <Save/> : <Edit />}
-                </Fab>
-                {isSaving && <CircularProgress 
-                            size={68} 
-                            className={classes.savingProgress} />}
-            </div>
+                aria-label="save"
+                color="primary"
+                disabled={isSaving}
+                onClick={onEditonFabClicked}
+            >
+                {(isEditing || isSaving) ? <Save/> : <Edit />}
+            </Fab>
+            {isSaving && <CircularProgress 
+                        size={68} 
+                        className={classes.savingProgress} />}
         </Container>
     );
 };
