@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import CandidateSearch from './components/CandidateSearch';
 import Curriculum from './components/Curriculum';
 
+// <Route exact component={LinkedInCallback} path="/candidates/linkedin/callback" />
+
 function App() {
   return (
     <>
