@@ -1,8 +1,12 @@
 const { Router } = require('express');
+const CompanyController = require('./controllers/CompanyController');
 const CandidateController = require('./controllers/CandidateController');
 const OpportunityController = require('./controllers/OpportunityController');
 
 const router = Router();
+
+router.get('/company', CompanyController.get);
+router.put('/company', CompanyController.store);
 
 router.get('/candidates/:id', CandidateController.get);
 router.get('/candidates', CandidateController.index);
