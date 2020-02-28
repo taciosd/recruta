@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
-import { 
-        Container, 
+import { Container, 
         Grid,
         TextField, 
         makeStyles,
-        useTheme,
-        CircularProgress,
-        Fab } from '@material-ui/core';
-import { Edit, Save } from '@material-ui/icons';
-import { useLocation, useParams } from 'react-router-dom';
+        useTheme } from '@material-ui/core';
 import { useState } from 'react';
-import axios from '../services/api';
+import { EditableControl } from './../util/EditableControl';
+import axios from '../../services/api';
+import { useLocation, useParams } from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,30 +22,6 @@ const useStyles = makeStyles(theme => ({
             position: 'relative',
         }
     },
-    fab: {
-        [theme.breakpoints.down('xs')]: {
-            position: 'fixed',
-            bottom: theme.spacing(2),
-            right: theme.spacing(1),
-        },
-        [theme.breakpoints.up('sm')]: {
-            position: 'absolute',
-            bottom: theme.spacing(2),
-            right: theme.spacing(4),
-        },
-    },
-    savingProgress: {
-        [theme.breakpoints.down('xs')]: {
-            position: 'fixed',
-            bottom: theme.spacing(1.2),
-            right: theme.spacing(0.3),
-        },
-        [theme.breakpoints.up('sm')]: {
-            position: 'absolute',
-            bottom: theme.spacing(1.2),
-            right: theme.spacing(3.2),
-        },
-    }
 }));
 
 export default function Curriculum(props) {
@@ -56,6 +29,7 @@ export default function Curriculum(props) {
     const classes = useStyles(theme);
     const location = useLocation();
     const { id } = useParams();
+
     //var linkedinPopup;
 
     const [name, setName] = useState("");
@@ -63,6 +37,8 @@ export default function Curriculum(props) {
     const [cpf, setCpf] = useState("");
     const [linkedinUrl, setLinkedinUrl] = useState("");
     const [curriculumContent, setCurriculumContent] = useState("");
+
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         if (typeof location.state === 'undefined') {
@@ -88,23 +64,9 @@ export default function Curriculum(props) {
             setCurriculumContent(location.state.cand.curriculum_content);
         }
     }, [location, id]);
-    
-    const [isEditing, setIsEditing] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-
-    function onEditonFabClicked() {
-        if (isEditing) {
-            setIsEditing(false);
-            saveCandidate();
-        }
-        else {
-            setIsEditing(true);
-        }
-    }
 
     async function saveCandidate() {
-        setIsSaving(true);
-        await new Promise(r => setTimeout(r, 4000));
+        await new Promise(() => setTimeout(this, 4000))
         await axios.post(`/candidates/${id}`, {
             name: name,
             email: email,
@@ -112,8 +74,8 @@ export default function Curriculum(props) {
             linkedin_url: linkedinUrl,
             curriculum_content: curriculumContent,
         });
-        setIsSaving(false);
     }
+
 /*
     function authenticate() {
         const clientId = '77zn01e6hz43ee';
@@ -200,18 +162,10 @@ export default function Curriculum(props) {
                         />
                 </Grid>
             </Grid>
-            <Fab
-                className={classes.fab}
-                aria-label="save"
-                color="primary"
-                disabled={isSaving}
-                onClick={onEditonFabClicked}
-            >
-                {(isEditing || isSaving) ? <Save/> : <Edit />}
-            </Fab>
-            {isSaving && <CircularProgress 
-                        size={68} 
-                        className={classes.savingProgress} />}
+            <EditableControl 
+                onEdit={(event) => setIsEditing(event)} 
+                onSave={() => saveCandidate} 
+            />
         </Container>
     );
 };

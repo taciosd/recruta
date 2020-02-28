@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: 50,
+        marginBottom: 50,
         [theme.breakpoints.down('xs')]: {
             height: 400,
         },
@@ -78,13 +79,13 @@ export default function WelcomePage(props) {
                     projetos e cursos de aperfeiçoamento, como um ambiente acadêmico deve ser.
                     Conheça nossas vagas!
                 </Typography>
-                <Link to='/jobopportunities'>
+                <Link to='/opportunities'>
                     <Button 
                         variant="contained" 
                         color="primary" 
                         size="large"
                     >
-                        Vagas abertas
+                    Vagas abertas
                     </Button>
                 </Link>
             </Container>

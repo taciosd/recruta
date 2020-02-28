@@ -14,6 +14,8 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
+        width: 400,
+        background: "white",
     },
     details: {
         flexDirection: 'column',
@@ -37,9 +39,7 @@ export default function CandidateCard(props) {
     const candidate = props.candidate;
 
     return (
-        <Card 
-            style={{width:400, background:"white"}} 
-            className={classes.root}>
+        <Card className={classes.root}>
             <CardActionArea className={classes.photo}>
                 <CardMedia 
                     component="img" 
