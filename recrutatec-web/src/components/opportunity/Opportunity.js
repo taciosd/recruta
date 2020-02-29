@@ -13,6 +13,10 @@ export default function Opportunity(props) {
     const classes = useStyle(theme);
 
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [group, setGroup] = useState('');
+    const [tags, setTags] = useState([]);
+
 
     return (
         <Container maxWidth="lg" className={classes.root}>
@@ -27,6 +31,18 @@ export default function Opportunity(props) {
                         onChange={event => setTitle(event.target.value)}
                         value={title}
                     />
+                    <TextField 
+                        variant="outlined" 
+                        fullWidth 
+                        required 
+                        disabled={true}
+                        label="Descrição"
+                        multiline
+                        rows="10"
+                        onChange={event => setDescription(event.target.value)}
+                        value={description}
+                    />
+                    
                 </Grid>
             </Grid>
             <EditableControl />
