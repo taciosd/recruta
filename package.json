@@ -5,7 +5,8 @@
     "license": "MIT",
     "scripts": {
       "start": "npm start --prefix recruta-server",
-      "postinstall": "npm install --prefix recruta-server && npm install --prefix recruta-web"
+      "postinstall": "npm install --prefix recruta-server && npm install --prefix recruta-web",
+      "build": "cd recruta-web && yarn build && cd .. && cd recruta-server && yarn build && cd .."
     },
     "cacheDirectories": ["recruta-server/node_modules", "recruta-web/node_modules"]
 }
