@@ -1,0 +1,9 @@
+{
+    "name": "recruta",
+    "version": "0.1.0",
+    "author": "Tácio S. Diogo",
+    "license": "MIT",
+    "scripts": {
+      "postinstall": "npm install --prefix recruta-server && npm install --prefix recruta-web"
+    }
+}

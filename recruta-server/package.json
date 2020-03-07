@@ -1,12 +1,13 @@
 {
-  "name": "recrutatec-server",
+  "name": "recruta-server",
   "version": "1.0.0",
   "description": "Node server for candidates and curriculum management.",
   "main": "index.js",
   "author": "Tácio S. Diogo",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -17,5 +18,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
