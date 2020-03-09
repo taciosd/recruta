@@ -65,14 +65,17 @@ export default function Curriculum(props) {
         }
     }, [location, id]);
 
-    async function saveCandidate() {
-        await new Promise(() => setTimeout(this, 4000))
-        await axios.post(`/candidates/${id}`, {
-            name: name,
-            email: email,
-            cpf: cpf,
-            linkedin_url: linkedinUrl,
-            curriculum_content: curriculumContent,
+    function saveCandidate() {
+        return new Promise( async (resolve) => {
+            await axios.post(`/candidates/${id}`, {
+                name: name,
+                email: email,
+                cpf: cpf,
+                linkedin_url: linkedinUrl,
+                curriculum_content: curriculumContent,
+            });
+
+            resolve();
         });
     }
 
@@ -164,7 +167,7 @@ export default function Curriculum(props) {
             </Grid>
             <EditableControl 
                 onEdit={(event) => setIsEditing(event)} 
-                onSave={() => saveCandidate} 
+                onSave={() => saveCandidate()}
             />
         </Container>
     );

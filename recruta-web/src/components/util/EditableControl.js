@@ -42,9 +42,10 @@ export const EditableControl = ({onEdit, onSave}) => {
             setIsEditing(false);
             if (onEdit) onEdit(false);
 
-            setIsSaving(true);
-            if (onSave) onSave();
-            setIsSaving(false);
+            if (onSave) {
+                setIsSaving(true);
+                onSave().then(() => setIsSaving(false));
+            }
         }
         else {
             setIsEditing(true);
@@ -59,7 +60,7 @@ export const EditableControl = ({onEdit, onSave}) => {
                 aria-label="save"
                 color="primary"
                 disabled={isSaving}
-                onClick={onEditonFabClicked}
+                onClick={() => onEditonFabClicked()}
             >
                 {(isEditing || isSaving) ? <Save/> : <Edit />}
             </Fab>
