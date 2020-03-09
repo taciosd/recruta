@@ -6,8 +6,9 @@ const cors = require('cors');
 
 const envParseResult = require('dotenv').config();
 if (envParseResult.error) {
-    console.log('You need a .env file in the server root directory.');
-    throw envParseResult.error;
+    console.log('There is no .env file in the server root directory.');
+    if (process.env.NODE_ENV === 'development')
+        throw envParseResult.error;
 }
 
 mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASSWORD + '@' + process.env.DB_HOST + '?retryWrites=true&w=majority', 
@@ -29,6 +30,7 @@ app.use(routes);
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
     const path = require('path');
+    console.log('hosting front-end files');
     
     app.use(express.static(path.join(__dirname, '/../../recruta-web/build')));
     app.get('/*', (req, res) => {
