@@ -11,6 +11,9 @@ module.exports = {
     },
 
     async get(req, res) {
+        const id = req.params.id;
+        const opportunity = await Opportunity.findById(id);
+        res.json(opportunity);
     },
 
     async store(req, res) {
@@ -20,5 +23,17 @@ module.exports = {
     },
     
     async update(req, res) {
+        const id = req.params.id;
+        const opportunityTemplate = req.body;
+        const savedOpportunity = 
+            await Opportunity.findOneAndUpdate(
+                {_id: id}, 
+                opportunityTemplate, 
+                {
+                    new: true
+                }
+            );
+
+        res.json(savedOpportunity);
     },
 };

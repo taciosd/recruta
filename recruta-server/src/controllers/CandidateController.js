@@ -16,7 +16,7 @@ module.exports = {
     },
 
     async get(req, res) {
-        const id = req.param('id');
+        const id = req.params.id;
         const candidate = await Candidate.findById(id);
         res.json(candidate);
     },

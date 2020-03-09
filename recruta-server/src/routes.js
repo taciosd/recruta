@@ -14,7 +14,9 @@ router.post('/candidates/:id', CandidateController.update);
 router.post('/candidates', CandidateController.store);
 router.get('/candidates/auth/linkedin', CandidateController.loginWithLinkedIn);
 
+router.get('/opportunities/:id', OpportunityController.get);
 router.get('/opportunities', OpportunityController.index);
+router.post('/opportunities/:id', OpportunityController.update);
 router.post('/opportunities', OpportunityController.store);
 
 
