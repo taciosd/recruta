@@ -2,10 +2,15 @@ const express = require('express');
 const routes = require('./routes');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 //const passport = require('passport');
 
-mongoose.connect('mongodb+srv://taciosd:cZD9260IbVlmvJjE@cluster0-q33qb.mongodb.net/test?retryWrites=true&w=majority', 
+const envParseResult = require('dotenv').config();
+if (envParseResult.error) {
+    console.log('You need a .env file in the server root directory.');
+    throw envParseResult.error;
+}
+
+mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASSWORD + '@' + process.env.DB_HOST + '?retryWrites=true&w=majority', 
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -13,7 +18,7 @@ mongoose.connect('mongodb+srv://taciosd:cZD9260IbVlmvJjE@cluster0-q33qb.mongodb.
     }
 )
 .catch(function(reason) {
-    console.log('Error: ' + reason);
+    console.log('MongoDB connection error: ' + reason);
 });
 
 const app = express();
@@ -23,6 +28,8 @@ app.use(express.json());
 app.use(routes);
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    const path = require('path');
+    
     app.use(express.static(path.join(__dirname, '/../../recruta-web/build')));
     app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname + '/../../recruta-web/build/index.html'));
