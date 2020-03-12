@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
-import axios from '../../services/api';
+import { Container, Grid, Typography, Fab } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import AddIcon from '@material-ui/icons/Add';
+import api from '../../services/api';
 import OpportunityCard from './OpportunityCard';
 
 export default function Opportunities(props) {
@@ -8,7 +10,7 @@ export default function Opportunities(props) {
 
     useEffect(() => {
         async function fetchOpprtunities() {
-            const res = await axios.get('/opportunities');
+            const res = await api.get('/opportunities');
             return res.data;
         }
         
@@ -17,7 +19,7 @@ export default function Opportunities(props) {
             setOpportunities(opportunities);
         });
     }, []);
-    
+
     return (
         <>
             <Container>
@@ -31,6 +33,13 @@ export default function Opportunities(props) {
                         )
                     })}
                 </Grid>
+                <Link to='/opportunities/create'>
+                    <Fab
+                        color="primary"
+                    >
+                        <AddIcon/>
+                    </Fab>
+                </Link>
             </Container>
         </>
     );

@@ -16,11 +16,12 @@ function App() {
       <CssBaseline/>
       <Router>
         <TopBar />
-        <Route exact component={WelcomePage} path="/" />
-        <Route exact component={CandidateSearch} path="/candidates" />
-        <Route exact component={Curriculum} path="/candidates/:id" />
-        <Route exact component={OpportunitySearch} path="/opportunities" />
-        <Route exact component={Opportunity} path="/opportunities/:id" />
+        <Route exact path="/" component={WelcomePage} />
+        <Route exact path="/candidates" component={CandidateSearch} />
+        <Route exact path="/candidates/:id" component={Curriculum} />
+        <Route exact path="/opportunities" component={OpportunitySearch} />
+        <Route exact path="/opportunities/new" component={Opportunity} />
+        <Route exact path="/opportunities/:id" component={Opportunity} />
       </Router>
     </>
   );
