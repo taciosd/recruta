@@ -3,6 +3,7 @@ import { Container, Grid, TextField, Select, MenuItem, useTheme, makeStyles } fr
 import { EditableControl } from '../util/EditableControl';
 import { useLocation, useParams } from 'react-router-dom';
 import api from './../../services/api';
+import DateUtil from '../../util/date';
 
 const useStyle = makeStyles(theme => ({
     root: {
@@ -19,6 +20,7 @@ const useStyle = makeStyles(theme => ({
 }));
 
 export default function Opportunity(props) {
+    const CREATE = "create";
     const theme = useTheme();
     const classes = useStyle(theme);
     const location = useLocation();
@@ -26,27 +28,15 @@ export default function Opportunity(props) {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [group, setGroup] = useState('Engenharia');
-    const [groups, setGroups] = useState([]);
+    const [group, setGroup] = useState('');
+    const [groups, setGroups] = useState({});
     const [tags, setTags] = useState([]);
     
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(id === CREATE);
 
     useEffect(() => {
         let opportunity;
-        if (typeof location.state === 'undefined') {
-            async function fetchOpportunity() {
-                const res = await api.get(`/opportunities/${id}`);
-                return res.data;
-            }
-
-            fetchOpportunity()
-            .then(op => opportunity = op);
-        }
-        else if (location.state.opportunity) {
-            opportunity = location.state.opportunity;
-        }
-        else {
+        if (id === CREATE) {
             // New
             opportunity = {
                 title: "",
@@ -54,26 +44,58 @@ export default function Opportunity(props) {
                 group: "",
                 tags: []
             };
+            setIsEditing(true);
+            setGroups(location.state.groups);
         }
+        else if (typeof location.state !== 'undefined') {
+            opportunity = location.state.opportunity;
+            setGroups(location.state.groups);
 
-        setTitle(opportunity.title);
-        setDescription(opportunity.description);
-        setGroup(opportunity.group);
-        setTags(opportunity.tags);
+            setTitle(opportunity.title);
+            setDescription(opportunity.description);
+            setGroup(opportunity.group);
+            setTags(opportunity.tags);
+        }
+        else {
+            async function fetchOpportunity() {
+                const res = await api.get(`/opportunities/${id}`);
+                return res.data;
+            }
 
-        //const { Groups } = opportunity.statics;
-        //setGroups(Object.values(Groups));
+            fetchOpportunity()
+            .then(data => {
+                opportunity = data.opportunity;
+                setGroups(data.groups);
+
+                setTitle(opportunity.title);
+                setDescription(opportunity.description);
+                setGroup(opportunity.group);
+                setTags(opportunity.tags);
+            });
+        }
     }, [location, id]);
 
     function saveOpportunity() {
+        let path = '/opportunities';
+        if (id !== CREATE) {
+            path += `/${id}`;
+        }
+
         return new Promise( async (resolve, reject) => {
-            await api.post(`/opportunities/${id}`, {
-                title,
-                description,
-                group,
-                tags
-            });
-            resolve();
+            try {
+                await api.post(path, {
+                    title,
+                    description,
+                    creationDate: new DateUtil().getCurrentDate(),
+                    group,
+                    tags
+                });
+    
+                resolve();
+            }
+            catch(err) {
+                reject(err);
+            }
         });
     }
 
@@ -123,16 +145,16 @@ export default function Opportunity(props) {
                         required 
                         disabled={!isEditing}
                         displayEmpty
-                        onChange={handleGroupChange}
                         value={group}
+                        onChange={handleGroupChange}
                     >
                         <MenuItem value="" disabled>
                         Group
                         </MenuItem>
                         {
-                            groups.map((value, i) => {
+                            Object.keys(groups).forEach((key,index) => {
                                 return (
-                                    <MenuItem key={i} value={value}>{value}</MenuItem>
+                                    <MenuItem key={index} value={key}>{groups[key]}</MenuItem>
                                 );
                             })
                         }
@@ -140,6 +162,7 @@ export default function Opportunity(props) {
                 </Grid>
             </Grid>
             <EditableControl 
+                edit={isEditing}
                 onEdit={(editing) => setIsEditing(editing)} 
                 onSave={() => saveOpportunity()} />
         </Container>

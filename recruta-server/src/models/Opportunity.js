@@ -9,6 +9,7 @@ const Groups = Object.freeze({
 const opportunitySchema = new mongoose.Schema({
     title: String,
     description: String,
+    creationDate: Date,
     group: {
         type: String,
         enum: Object.values(Groups),

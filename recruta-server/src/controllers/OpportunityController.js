@@ -5,20 +5,35 @@ module.exports = {
     async index(req, res) {
         const opportunities = await Opportunity.find()
         .catch(e => {
-            console.log('Error getting opportunities list');
+            console.log(e);
         });
-        res.json(opportunities);
+
+        const groups = Opportunity.schema.statics.Groups;
+        res.json({
+            opportunities,
+            groups
+        });
     },
 
     async get(req, res) {
         const id = req.params.id;
         const opportunity = await Opportunity.findById(id);
-        res.json(opportunity);
+        const groups = Opportunity.schema.statics.Groups;
+        res.json({
+            opportunity,
+            groups
+        });
     },
 
     async store(req, res) {
         const opportunityTemplate = req.body;
-        const savedOpportunity = await Opportunity.create(opportunityTemplate);
+        const savedOpportunity = 
+            await Opportunity.create(opportunityTemplate)
+            .catch(e => {
+                console.log(e);
+                res.status(400).send('Error while saving new opportunity.');
+                return;
+            });
         res.json(savedOpportunity);
     },
     
@@ -32,7 +47,12 @@ module.exports = {
                 {
                     new: true
                 }
-            );
+            )
+            .catch(e => {
+                console.log(e);
+                res.status(400).send('Error while updating opportunity.');
+                return;
+            });
 
         res.json(savedOpportunity);
     },

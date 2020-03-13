@@ -86,10 +86,12 @@ export default function TopBar(prop) {
                             <ListItemText primary="Candidatos" />
                         </ListItem>
                     </Link>
-                    <ListItem button key="Vagas">
-                        <ListItemIcon><DescriptionIcon/></ListItemIcon>
-                        <ListItemText primary="Vagas" />
-                    </ListItem>
+                    <Link to="/opportunities">
+                        <ListItem button key="Vagas">
+                            <ListItemIcon><DescriptionIcon/></ListItemIcon>
+                            <ListItemText primary="Vagas" />
+                        </ListItem>
+                    </Link>
                 </List>
             </div>
         </Drawer>
